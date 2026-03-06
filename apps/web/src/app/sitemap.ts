@@ -3,15 +3,21 @@ import { getPosts } from "@/lib/blog/query";
 import type { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-	const data = await getPosts();
+	let postPages: MetadataRoute.Sitemap = [];
 
-	const postPages: MetadataRoute.Sitemap =
-		data?.posts?.map((post) => ({
-			url: `${SITE_URL}/blog/${post.slug}`,
-			lastModified: new Date(post.publishedAt),
-			changeFrequency: "weekly",
-			priority: 0.8,
-		})) ?? [];
+	try {
+		const data = await getPosts();
+		postPages =
+			data?.posts?.map((post) => ({
+				url: `${SITE_URL}/blog/${post.slug}`,
+				lastModified: new Date(post.publishedAt),
+				changeFrequency: "weekly",
+				priority: 0.8,
+			})) ?? [];
+	} catch (error) {
+		console.warn("Failed to fetch blog posts for sitemap:", error);
+		// 继续生成 sitemap，只是不包含博客文章
+	}
 
 	return [
 		{

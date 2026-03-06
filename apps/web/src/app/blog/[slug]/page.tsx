@@ -56,12 +56,18 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-	const data = await getPosts();
-	if (!data || !data.posts.length) return [];
+	try {
+		const data = await getPosts();
+		if (!data || !data.posts.length) return [];
 
-	return data.posts.map((post) => ({
-		slug: post.slug,
-	}));
+		return data.posts.map((post) => ({
+			slug: post.slug,
+		}));
+	} catch (error) {
+		console.warn("Failed to fetch blog posts during build:", error);
+		// 返回空数组，允许构建继续，博客页面将在运行时动态生成
+		return [];
+	}
 }
 
 export default async function BlogPostPage({ params }: PageProps) {
