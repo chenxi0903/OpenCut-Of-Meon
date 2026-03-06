@@ -4,11 +4,48 @@
       <img src="apps/web/public/logos/opencut/1k/logo-white-black.png" alt="OpenCut Logo" width="100" />
     </td>
     <td align="right">
-      <h1>OpenCut</span></h1>
-      <h3 style="margin-top: -10px;">A free, open-source video editor for web, desktop, and mobile.</h3>
+      <h1>OpenCut - 本地版</span></h1>
+      <h3 style="margin-top: -10px;">完全本地化的免费开源视频编辑器</h3>
     </td>
   </tr>
 </table>
+
+> 🎉 **本地版特性**: 无需数据库、无需服务器、所有数据存储在浏览器中！
+
+## 快速开始
+
+```bash
+# 1. 安装依赖
+bun install
+
+# 2. 创建配置（可选）
+cp apps/web/.env.local.example apps/web/.env.local
+
+# 3. 启动应用
+bun dev:web
+```
+
+就这么简单！访问 [http://localhost:3000](http://localhost:3000)
+
+📖 详细说明请查看 [QUICKSTART.md](QUICKSTART.md)
+
+## 本地版 vs 原版
+
+| 特性 | 本地版 | 原版 |
+|------|--------|------|
+| 数据存储 | 浏览器 IndexedDB | PostgreSQL |
+| 用户认证 | 本地匿名 | Better Auth |
+| 部署 | 静态托管 | 需要服务器 |
+| 隐私 | 100% 本地 | 服务器存储 |
+| 设置复杂度 | ⭐ 简单 | ⭐⭐⭐ 复杂 |
+
+## 为什么选择本地版？
+
+- **隐私优先**: 视频和项目数据永不离开你的设备
+- **零配置**: 无需 Docker、数据库或 Redis
+- **完全免费**: 没有服务器成本
+- **离线工作**: 无需网络连接即可编辑视频
+- **快速启动**: 3 个命令即可运行
 
 ## Sponsors
 
@@ -22,99 +59,117 @@ Thanks to [Vercel](https://vercel.com?utm_source=github-opencut&utm_campaign=oss
   <img alt="Powered by fal.ai" src="https://img.shields.io/badge/Powered%20by-fal.ai-000000?style=flat&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCAxMEwxMy4wOSAxNS43NEwxMiAyMkwxMC45MSAxNS43NEw0IDEwTDEwLjkxIDguMjZMMTIgMloiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo=" />
 </a>
 
-## Why?
+## 功能特性
 
-- **Privacy**: Your videos stay on your device
-- **Free features**: Most basic CapCut features are now paywalled 
-- **Simple**: People want editors that are easy to use - CapCut proved that
+- ✅ 时间轴编辑
+- ✅ 多轨道支持
+- ✅ 实时预览
+- ✅ 无水印
+- ✅ 完全本地存储
+- ✅ 100% 匿名分析（[Databuddy](https://www.databuddy.cc?utm_source=opencut)）
+- ✅ 博客支持（[Marble](https://marblecms.com?utm_source=opencut)）
 
-## Features
+## 项目结构
 
-- Timeline-based editing
-- Multi-track support
-- Real-time preview
-- No watermarks or subscriptions
-- Analytics provided by [Databuddy](https://www.databuddy.cc?utm_source=opencut), 100% Anonymized & Non-invasive.
-- Blog powered by [Marble](https://marblecms.com?utm_source=opencut), Headless CMS.
-
-## Project Structure
-
-- `apps/web/` – Main Next.js web application
-- `src/components/` – UI and editor components
-- `src/hooks/` – Custom React hooks
-- `src/lib/` – Utility and API logic
-- `src/stores/` – State management (Zustand, etc.)
-- `src/types/` – TypeScript types
-
-## Getting Started
-
-### Prerequisites
-
-- [Bun](https://bun.sh/docs/installation)
-- [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/)
-
-> **Note:** Docker is optional but recommended for running the local database and Redis. If you only want to work on frontend features, you can skip it.
-
-### Setup
-
-1. Fork and clone the repository
-
-2. Copy the environment file:
-
-   ```bash
-   # Unix/Linux/Mac
-   cp apps/web/.env.example apps/web/.env.local
-
-   # Windows PowerShell
-   Copy-Item apps/web/.env.example apps/web/.env.local
-   ```
-
-3. Start the database and Redis:
-
-   ```bash
-   docker compose up -d db redis serverless-redis-http
-   ```
-
-4. Install dependencies and start the dev server:
-
-   ```bash
-   bun install
-   bun dev:web
-   ```
-
-The application will be available at [http://localhost:3000](http://localhost:3000).
-
-The `.env.example` has sensible defaults that match the Docker Compose config — it should work out of the box.
-
-### Self-Hosting with Docker
-
-To run everything (including a production build of the app) in Docker:
-
-```bash
-docker compose up -d
+```
+OpenCut-Of-Meon/
+├── apps/web/              # Next.js 应用
+│   ├── src/
+│   │   ├── core/         # 编辑器核心
+│   │   ├── components/   # UI 组件
+│   │   ├── services/     # 渲染服务
+│   │   ├── lib/          # 业务逻辑
+│   │   │   └── auth/     # 本地认证系统
+│   │   └── stores/       # 状态管理
+│   └── public/           # 静态资源
+└── packages/
+    ├── env/              # 环境配置
+    └── ui/               # UI 组件库
 ```
 
-The app will be available at [http://localhost:3100](http://localhost:3100).
+## 技术栈
 
-## Contributing
+- **框架**: Next.js 16 + React 19
+- **语言**: TypeScript
+- **状态管理**: Zustand
+- **UI**: Radix UI + Tailwind CSS
+- **存储**: IndexedDB + OPFS
+- **视频处理**: FFmpeg (WebAssembly)
+- **包管理**: Bun + Turborepo
 
-We welcome contributions! While we're actively developing and refactoring certain areas, there are plenty of opportunities to contribute effectively.
+## 数据存储
 
-**🎯 Focus areas:** Timeline functionality, project management, performance, bug fixes, and UI improvements outside the preview panel.
+所有数据存储在浏览器中：
 
-**⚠️ Avoid for now:** Preview panel enhancements (fonts, stickers, effects) and export functionality - we're refactoring these with a new binary rendering approach.
+- **项目数据**: IndexedDB (`video-editor-projects`)
+- **媒体文件**: OPFS + IndexedDB
+- **用户信息**: IndexedDB (`opencut-auth`)
+- **音效收藏**: IndexedDB (`video-editor-saved-sounds`)
 
-See our [Contributing Guide](.github/CONTRIBUTING.md) for detailed setup instructions, development guidelines, and complete focus area guidance.
+## 环境变量
 
-**Quick start for contributors:**
+最小配置（必需）：
+```env
+NODE_ENV=development
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_MARBLE_API_URL=https://api.marblecms.com
+```
 
-- Fork the repo and clone locally
-- Follow the setup instructions in CONTRIBUTING.md
-- Create a feature branch and submit a PR
+可选功能：
+- `FREESOUND_CLIENT_ID` / `FREESOUND_API_KEY` - 音效库
+- `MARBLE_WORKSPACE_KEY` - 博客功能
+- `CLOUDFLARE_ACCOUNT_ID` 等 - 自动字幕
 
-## License
+## 贡献
+
+欢迎贡献！查看 [Contributing Guide](.github/CONTRIBUTING.md)
+
+**重点领域:**
+- 时间轴功能
+- 项目管理
+- 性能优化
+- Bug 修复
+- UI 改进
+
+**暂时避免:**
+- 预览面板增强（正在重构）
+- 导出功能（正在重构）
+
+## 文档
+
+- 📖 [快速启动指南](QUICKSTART.md)
+- 🔧 [迁移指南](MIGRATION_GUIDE.md)
+- 📚 [本地版说明](README.LOCAL.md)
+- 🤝 [贡献指南](.github/CONTRIBUTING.md)
+
+## 浏览器兼容性
+
+推荐使用现代浏览器：
+- Chrome/Edge 86+
+- Firefox 111+
+- Safari 15.2+
+
+需要支持：IndexedDB、OPFS、WebAssembly、Canvas API
+
+## 许可证
 
 [MIT LICENSE](LICENSE)
+
+---
+
+## 常见问题
+
+### 数据会丢失吗？
+只要不清除浏览器数据，项目会一直保存。建议定期导出重要项目。
+
+### 可以在多台设备间同步吗？
+本地版不支持同步。每个浏览器的数据是独立的。
+
+### 存储空间有限制吗？
+取决于浏览器的存储配额，通常为几GB到几十GB。
+
+### 如何备份数据？
+使用浏览器开发者工具导出 IndexedDB，或导出项目为视频文件。
 
 ---
 

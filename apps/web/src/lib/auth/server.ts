@@ -1,43 +1,18 @@
-import { betterAuth, type RateLimit } from "better-auth";
-import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { Redis } from "@upstash/redis";
-import { db } from "@/lib/db";
-import { webEnv } from "@opencut/env/web";
+/**
+ * 本地认证服务器端 API
+ * 兼容原 better-auth 的接口
+ */
 
-const redis = new Redis({
-	url: webEnv.UPSTASH_REDIS_REST_URL,
-	token: webEnv.UPSTASH_REDIS_REST_TOKEN,
-});
+// 本地模式不需要服务器端认证
+// 所有认证逻辑在客户端通过 IndexedDB 完成
 
-export const auth = betterAuth({
-	database: drizzleAdapter(db, {
-		provider: "pg",
-		usePlural: true,
-	}),
-	secret: webEnv.BETTER_AUTH_SECRET,
-	user: {
-		deleteUser: {
-			enabled: true,
+export const auth = {
+	api: {
+		getSession: async () => {
+			// 服务器端不处理会话，返回 null
+			return { data: null };
 		},
 	},
-	emailAndPassword: {
-		enabled: true,
-	},
-	rateLimit: {
-		storage: "secondary-storage",
-		customStorage: {
-			get: async (key) => {
-				const value = await redis.get(key);
-				return value as RateLimit | undefined;
-			},
-			set: async (key, value) => {
-				await redis.set(key, value);
-			},
-		},
-	},
-	baseURL: webEnv.NEXT_PUBLIC_SITE_URL,
-	appName: "OpenCut",
-	trustedOrigins: [webEnv.NEXT_PUBLIC_SITE_URL],
-});
+};
 
 export type Auth = typeof auth;
